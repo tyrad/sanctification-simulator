@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 // 类型定义
 type PathKey = 'A' | 'B' | 'C' | 'D' | 'E';
@@ -274,14 +274,6 @@ export default function App() {
     let totalAttempts = 0;
     let accumulatedStone = 0;
     let accumulatedGold = 0;
-    let finalPath: Array<{
-      stage: number;
-      pathKey: PathKey;
-      pathName: string;
-      costStone: number;
-      costGold: number;
-      isTarget: boolean;
-    }> = [];
 
     while (simResult === null || !simResult.data?.success) {
       totalAttempts++;
@@ -300,7 +292,6 @@ export default function App() {
             attempts: totalAttempts,
           },
         };
-        finalPath = currentAttemptResult.path;
       }
     }
 
