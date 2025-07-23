@@ -274,6 +274,14 @@ export default function App() {
     let totalAttempts = 0;
     let accumulatedStone = 0;
     let accumulatedGold = 0;
+    let finalPath: Array<{
+      stage: number;
+      pathKey: PathKey;
+      pathName: string;
+      costStone: number;
+      costGold: number;
+      isTarget: boolean;
+    }> = [];
 
     while (simResult === null || !simResult.data?.success) {
       totalAttempts++;
@@ -282,13 +290,14 @@ export default function App() {
       accumulatedGold += currentAttemptResult.totalGold;
 
       if (currentAttemptResult.success) {
+        finalPath = currentAttemptResult.path;
         simResult = {
           type: 'single',
           data: {
             success: true,
-            path: currentAttemptResult.path,
-            totalStone: currentAttemptResult.totalStone,
-            totalGold: currentAttemptResult.totalGold,
+            path: finalPath,
+            totalStone: accumulatedStone,
+            totalGold: accumulatedGold,
             attempts: totalAttempts,
           },
         };
@@ -305,18 +314,13 @@ export default function App() {
     const runs = settings.batchCount;
 
     for (let i = 0; i < runs; i++) {
-      let simResult: SimulationResult | null = null;
-      while (simResult === null || !simResult.data?.success) {
+      let simResult: any = null;
+      while (simResult === null || !simResult.success) {
         const currentAttemptResult = _runSimulationOnce();
         totalStone += currentAttemptResult.totalStone;
         totalGold += currentAttemptResult.totalGold;
         if (currentAttemptResult.success) {
-          simResult = {
-            type: 'batch',
-            successCount: successCount + 1,
-            avgStone: totalStone / (i + 1),
-            avgGold: totalGold / (i + 1),
-          };
+          simResult = currentAttemptResult;
         }
       }
       successCount++; // Only count as success if a full successful path is found
@@ -381,7 +385,7 @@ export default function App() {
   return (
     <div className="w-full p-4 sm:p-6 font-sans bg-gray-900 text-gray-300 min-h-screen">
       <header className="text-center mb-6">
-        <h1 className="text-3xl sm:text-4xl font-bold text-white">《迷雾大陆》圣化模拟器</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-white">圣化模拟器</h1>
         <p className="text-gray-400 mt-2">模拟武器圣化过程与资源消耗</p>
       </header>
 
