@@ -1,21 +1,25 @@
-# React + TypeScript + Vite
+# 圣化模拟器
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+《迷雾大陆》武器圣化过程模拟工具，帮助计算资源消耗和成功概率。
 
-While this project uses React, Vite supports many popular JS frameworks. [See all the supported frameworks](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
+**注：非迷雾大陆官方出品，由 Claude + Gemini 生成**
 
-## Deploy Your Own
+## 功能
 
-Deploy your own Vite project with Vercel.
+- 支持6个职业的圣化路径模拟
+- 单次/批量模拟模式
+- 路径屏蔽和目标设置
+- 资源消耗计算（圣化石、金币）
+
+## 使用
+
+```bash
+npm install
+npm run dev
+```
+
+选择职业 → 设置目标路径 → 运行模拟 → 查看结果
+
+## Deploy with Vercel
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/framework-boilerplates/vite-react&template=vite-react)
-
-_Live Example: https://vite-react-example.vercel.app_
-
-### Deploying From Your Terminal
-
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
-
-```shell
-$ vercel
-```
