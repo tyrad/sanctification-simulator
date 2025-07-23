@@ -34,11 +34,13 @@ interface SimulationResult {
     totalStone: number;
     totalGold: number;
     attempts: number;
+    failedAttempts: number;
   };
   totalRuns?: number;
   successCount?: number;
   avgStone?: number;
   avgGold?: number;
+  totalFailedAttempts?: number;
 }
 
 export default function App() {
@@ -272,6 +274,7 @@ export default function App() {
   const runSingleSimulation = () => {
     let simResult: SimulationResult | null = null;
     let totalAttempts = 0;
+    let failedAttempts = 0;
     let accumulatedStone = 0;
     let accumulatedGold = 0;
     let finalPath: Array<{
@@ -299,8 +302,11 @@ export default function App() {
             totalStone: accumulatedStone,
             totalGold: accumulatedGold,
             attempts: totalAttempts,
+            failedAttempts: failedAttempts,
           },
         };
+      } else {
+        failedAttempts++;
       }
     }
 
@@ -311,6 +317,7 @@ export default function App() {
     let successCount = 0;
     let totalStone = 0;
     let totalGold = 0;
+    let totalFailedAttempts = 0;
     const runs = settings.batchCount;
 
     for (let i = 0; i < runs; i++) {
@@ -321,6 +328,8 @@ export default function App() {
         totalGold += currentAttemptResult.totalGold;
         if (currentAttemptResult.success) {
           simResult = currentAttemptResult;
+        } else {
+          totalFailedAttempts++;
         }
       }
       successCount++; // Only count as success if a full successful path is found
@@ -332,6 +341,7 @@ export default function App() {
       successCount: successCount,
       avgStone: totalStone / runs,
       avgGold: totalGold / runs,
+      totalFailedAttempts: totalFailedAttempts,
     });
   };
 
@@ -540,12 +550,16 @@ export default function App() {
                   <span className="font-mono text-lg text-green-400">{result.successCount} 次</span>
                 </div>
                 <div className="flex justify-between items-center bg-gray-700 p-3 rounded-md">
+                  <span className="font-medium">平均失败次数:</span>
+                  <span className="font-mono text-lg text-red-400">{((result.totalFailedAttempts || 0) / (result.successCount || 1)).toFixed(2)} 次/成功</span>
+                </div>
+                <div className="flex justify-between items-center bg-gray-700 p-3 rounded-md">
                   <span className="font-medium">平均圣化石消耗:</span>
                   <span className="font-mono text-lg text-yellow-400">{result.avgStone?.toFixed(2) || 'N/A'}</span>
                 </div>
                 <div className="flex justify-between items-center bg-gray-700 p-3 rounded-md">
                   <span className="font-medium">平均金币消耗:</span>
-                  <span className="font-mono text-lg text-yellow-400">{result.avgGold?.toFixed(2) || 'N/A'}</span>
+                  <span className="font-mono text-lg text-yellow-400">{result.avgGold?.toFixed(2) || 'N/A'} 万</span>
                 </div>
               </div>
             )}
@@ -554,12 +568,20 @@ export default function App() {
               <div className="space-y-4">
                 <div className="border-t border-gray-700 pt-3 mt-3 space-y-2">
                   <div className="flex justify-between items-center">
+                    <span className="font-medium">总尝试次数:</span>
+                    <span className="font-mono text-lg text-blue-400">{result.data?.attempts}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">失败次数:</span>
+                    <span className="font-mono text-lg text-red-400">{result.data?.failedAttempts || 0}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
                     <span className="font-medium">总消耗圣化石:</span>
                     <span className="font-mono text-lg text-yellow-400">{result.data?.totalStone}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="font-medium">总消耗金币:</span>
-                    <span className="font-mono text-lg text-yellow-400">{result.data?.totalGold}</span>
+                    <span className="font-mono text-lg text-yellow-400">{result.data?.totalGold} 万</span>
                   </div>
                 </div>
                 <div className={`p-3 rounded-md text-center ${result.data?.success
