@@ -395,14 +395,14 @@ export default function App() {
   return (
     <div className="w-full p-4 sm:p-6 font-sans bg-gray-900 text-gray-300 min-h-screen">
       <header className="text-center mb-6">
-        <h1 className="text-3xl sm:text-4xl font-bold text-white">圣化模拟器</h1>
-        <p className="text-gray-400 mt-2">模拟武器圣化过程与资源消耗</p>
+        <h1 className="text-3xl sm:text-4xl font-bold text-white">迷雾大陆圣化模拟器</h1>
+        <p className="text-gray-400 mt-2">专业的武器圣化资源计算工具，支持六大职业的圣化路径规划</p>
       </header>
 
       <main className="space-y-6">
         {/* 设置区域 */}
-        <section className="bg-gray-800 p-5 rounded-lg shadow-lg">
-          <h2 className="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">模拟设置</h2>
+        <section className="bg-gray-800 p-5 rounded-lg shadow-lg" aria-labelledby="settings-heading">
+          <h2 id="settings-heading" className="text-xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">模拟设置</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="classSelect" className="block text-sm font-medium text-gray-300 mb-1">选择职业</label>
@@ -517,7 +517,7 @@ export default function App() {
         </section>
 
         {/* 操作按钮 */}
-        <section className="flex flex-wrap justify-center gap-2 sm:gap-4">
+        <section className="flex flex-wrap justify-center gap-2 sm:gap-4" role="toolbar" aria-label="模拟操作">
           <button
             onClick={runSingleSimulation}
             className="w-full sm:w-auto flex-1 sm:flex-initial px-3 sm:px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 text-sm sm:text-base"
@@ -540,8 +540,8 @@ export default function App() {
 
         {/* 结果显示 */}
         {result && (
-          <section className="bg-gray-800 p-5 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold text-white mb-4 pb-2">模拟结果</h2>
+          <section className="bg-gray-800 p-5 rounded-lg shadow-lg" aria-labelledby="results-heading">
+            <h2 id="results-heading" className="text-xl font-semibold text-white mb-4 pb-2">模拟结果</h2>
             {/* 批量模拟结果 */}
             {result.type === 'batch' && (
               <div className="space-y-3">
